@@ -95,7 +95,7 @@ class Level:
 									self.add_exp)
 
 	def create_attack(self):
-		
+		pass
 		self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
 	def create_magic(self,style,strength,cost):
