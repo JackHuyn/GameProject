@@ -2,6 +2,7 @@ import pygame
 from settings import *
 from entity import Entity
 from support import *
+from random import *
 
 class Enemy(Entity):
 	def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,add_exp):
@@ -55,9 +56,9 @@ class Enemy(Entity):
 		self.attack_sound.set_volume(0.6)
 
 		# roaming bahavior
-		self.roaming_range = 5
 		self.roaming_timer = 0
-		self.roaming_duration = 2000
+		self.roaming_duration = 5 * 1000
+		self.roaming_status = False
 
 	def import_graphics(self,name):
 			monster_path = f'../graphics/monsters/{name}/'
@@ -84,8 +85,6 @@ class Enemy(Entity):
 
 	def get_status(self, player):
 		distance, direction = self.get_player_distance_direction(player)
-
-		
 		if distance <= self.attack_radius:
 			if self.can_attack:
 				if 'idle' in self.status:
@@ -115,8 +114,13 @@ class Enemy(Entity):
 			self.attack_sound.play()
 		elif not 'idle' in self.status and not 'attack' in self.status:
 			self.direction = self.get_player_distance_direction(player)[1]
-		else:
-			self.direction = pygame.math.Vector2()
+
+		elif self.roaming_status:
+			self.roaming()
+
+
+		
+
 	def animate(self):
 		animation = self.animations[self.status]
 		
@@ -172,7 +176,46 @@ class Enemy(Entity):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.roaming_timer >= self.roaming_duration:
 			self.roaming_timer = current_time
-			# Randomly choose new x and y offsets within the roaming range
+			self.roaming_status = True
+
+	
+
+		
+
+	def roaming(self):
+		print('Roaming')  # Debug statement, remove it when satisfied
+
+		# Generate random x and y values for the new direction
+		random_x = randint(-1, 1)
+		random_y = randint(-1, 1)
+
+		# Limit the enemy's roaming range
+		random_x = max(-1, min(1, random_x))
+		random_y = max(-1, min(1, random_y))
+
+		# Set the new direction
+		self.direction.x = random_x
+		self.direction.y = random_y
+
+		# Check if the direction vector has a non-zero length
+		if self.direction.length() > 0:
+			# Normalize the direction vector
+			self.direction.normalize()
+
+			# Adjust the distance the enemy will move
+			max_range = TILESIZE * 2  # Change this value according to your needs
+
+			# Update the enemy's position
+			new_x = max(self.rect.x - max_range, min(self.rect.x + max_range, self.rect.x + int(self.direction.x * max_range)))
+			new_y = max(self.rect.y - max_range, min(self.rect.y + max_range, self.rect.y + int(self.direction.y * max_range)))
+
+			# Check if the new position is within the screen boundaries
+			screen_rect = pygame.display.get_surface().get_rect()
+			if screen_rect.collidepoint(new_x, new_y):
+				self.rect.topleft = (new_x, new_y)
+
+			self.roaming_status = False
+
 			
 
 	def update(self):
@@ -181,6 +224,7 @@ class Enemy(Entity):
 		self.animate()
 		self.cooldowns()
 		self.check_death()
+		self.roam_around()
 
 	def enemy_update(self,player):
 		self.get_status(player)

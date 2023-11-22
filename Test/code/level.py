@@ -41,12 +41,12 @@ class Level:
 		self.animation_player = AnimationPlayer()
 		self.magic_player = MagicPlayer(self.animation_player)
 
-		# respawn every 30 min
+		# respawn 
 		
 		self.last_enemy_respawn_time = pygame.time.get_ticks()
 		self.last_nature_respawn_time = pygame.time.get_ticks()
 
-		self.respawn_enemy_interval = 30 * 60 * 1000 #30 min
+		self.respawn_enemy_interval = 5 * 60 * 1000 #30 min
 		self.respawn_nature_interval = 1 * 24 * 60 * 60 * 1000  # daily
 
 
