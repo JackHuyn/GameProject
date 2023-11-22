@@ -55,10 +55,13 @@ class Enemy(Entity):
 		self.hit_sound.set_volume(0.6)
 		self.attack_sound.set_volume(0.6)
 
-		# roaming bahavior
+		# Roaming state variables
 		self.roaming_timer = 0
-		self.roaming_duration = 5 * 1000
+		self.roaming_duration = 2 * 1000  # Total duration for each roaming cycle (in milliseconds)
 		self.roaming_status = False
+		
+		
+
 
 	def import_graphics(self,name):
 			monster_path = f'../graphics/monsters/{name}/'
@@ -103,9 +106,12 @@ class Enemy(Entity):
 				self.status = 'up'
 			else:
 				self.status = 'down'
-		else:
+		elif distance > self.notice_radius and self.roaming_status == False:
+			print("Stop roaming")
 			if not 'idle' in self.status:
 				self.status += '_idle'
+
+		print("Status updated")
 
 	def actions(self,player):
 		if 'attack' in self.status:
@@ -114,12 +120,8 @@ class Enemy(Entity):
 			self.attack_sound.play()
 		elif not 'idle' in self.status and not 'attack' in self.status:
 			self.direction = self.get_player_distance_direction(player)[1]
-
-		elif self.roaming_status:
-			self.roaming()
-
-
-		
+		# elif 'idle' in self.status and not self.roaming_status:
+		# 	self.direction = pygame.math.Vector2()
 
 	def animate(self):
 		animation = self.animations[self.status]
@@ -177,13 +179,9 @@ class Enemy(Entity):
 		if current_time - self.roaming_timer >= self.roaming_duration:
 			self.roaming_timer = current_time
 			self.roaming_status = True
-
-	
-
-		
+			self.roaming()
 
 	def roaming(self):
-		print('Roaming')  # Debug statement, remove it when satisfied
 
 		# Generate random x and y values for the new direction
 		random_x = randint(-1, 1)
@@ -203,12 +201,11 @@ class Enemy(Entity):
 			self.direction.normalize()
 
 			# Adjust the distance the enemy will move
-			max_range = TILESIZE * 2  # Change this value according to your needs
-
+			max_range = TILESIZE   # Change this value according to your needs
+			
 			# Update the enemy's position
 			new_x = max(self.rect.x - max_range, min(self.rect.x + max_range, self.rect.x + int(self.direction.x * max_range)))
 			new_y = max(self.rect.y - max_range, min(self.rect.y + max_range, self.rect.y + int(self.direction.y * max_range)))
-
 			# Check if the new position is within the screen boundaries
 			screen_rect = pygame.display.get_surface().get_rect()
 			if screen_rect.collidepoint(new_x, new_y):
@@ -217,7 +214,6 @@ class Enemy(Entity):
 			self.roaming_status = False
 
 			
-
 	def update(self):
 		self.hit_reaction()
 		self.move(self.speed)

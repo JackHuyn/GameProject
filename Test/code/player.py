@@ -13,6 +13,7 @@ class Player(Entity):
 		# graphics setup
 		self.import_player_assets()
 		self.status = 'down'
+		self.pos = pos
 
 		# movement 
 		self.attacking = False
@@ -93,6 +94,9 @@ class Player(Entity):
 				self.attack_time = pygame.time.get_ticks()
 				self.create_attack()
 				self.weapon_attack_sound.play()
+
+			if keys[pygame.K_l]:
+				self.save_data()
 
 			# magic input 
 			if keys[pygame.K_LCTRL]:
@@ -204,6 +208,19 @@ class Player(Entity):
 			self.energy += 0.01 * self.stats['magic']
 		else:
 			self.energy = self.stats['energy']
+
+	def save_data(self):
+
+		data = []
+		data.append(self.pos)
+		data.append(self.exp)
+		for stat in self.stats:
+			data.append(stat)
+		for cost in self.upgrade_cost:
+			data.append(cost)
+
+		print(data)
+
 
 	def update(self):
 		self.input()
