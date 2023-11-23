@@ -59,9 +59,12 @@ class Enemy(Entity):
 		self.roaming_timer = 0
 		self.roaming_duration = 2 * 1000  # Total duration for each roaming cycle (in milliseconds)
 		self.roaming_status = False
-		
-		
+		self.original_pos = pos  # Save the original position for returning
 
+		# New state variables for roaming behavior
+		self.roaming_duration_step = 2 * 1000  # Roam for 2 seconds
+		self.return_timer = 0
+		self.return_duration = 10 * 1000  # Return after 10 seconds
 
 	def import_graphics(self,name):
 			monster_path = f'../graphics/monsters/{name}/'
@@ -106,12 +109,10 @@ class Enemy(Entity):
 				self.status = 'up'
 			else:
 				self.status = 'down'
-		elif distance > self.notice_radius and self.roaming_status == False:
-			print("Stop roaming")
+		else:
 			if not 'idle' in self.status:
 				self.status += '_idle'
 
-		print("Status updated")
 
 	def actions(self,player):
 		if 'attack' in self.status:
@@ -181,6 +182,7 @@ class Enemy(Entity):
 			self.roaming_status = True
 			self.roaming()
 
+		
 	def roaming(self):
 
 		# Generate random x and y values for the new direction
@@ -212,9 +214,22 @@ class Enemy(Entity):
 				self.rect.topleft = (new_x, new_y)
 
 			self.roaming_status = False
+		
 
+	def return_to_original_pos(self):
+		self.roaming_status = True
+		self.return_timer = pygame.time.get_ticks()
+
+		# Calculate the direction to the original position
+		direction_to_original = pygame.math.Vector2(self.original_pos) - pygame.math.Vector2(self.rect.topleft)
+
+		# Check if the direction vector has a non-zero length
+		if direction_to_original.length() > 0:
+			self.direction = direction_to_original.normalize()
+	
 			
 	def update(self):
+		print("Update")
 		self.hit_reaction()
 		self.move(self.speed)
 		self.animate()
@@ -225,3 +240,4 @@ class Enemy(Entity):
 	def enemy_update(self,player):
 		self.get_status(player)
 		self.actions(player)
+		

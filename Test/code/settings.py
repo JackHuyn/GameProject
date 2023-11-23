@@ -1,6 +1,6 @@
 # game setup
 WIDTH    = 1280	
-HEIGTH   = 720
+HEIGHT   = 720
 FPS      = 60
 TILESIZE = 64
 HITBOX_OFFSET = {
@@ -22,6 +22,8 @@ WATER_COLOR = '#71ddee'
 UI_BG_COLOR = '#222222'
 UI_BORDER_COLOR = '#111111'
 TEXT_COLOR = '#EEEEEE'
+WHITE = '#FFFFFF'
+BLACK = '#000000'
 
 # ui colors
 HEALTH_COLOR = 'red'

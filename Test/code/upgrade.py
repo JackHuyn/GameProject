@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class Upgrade:
 	def __init__(self,player):
 

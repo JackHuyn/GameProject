@@ -14,7 +14,7 @@ from upgrade import Upgrade
 
 class Level:
 	def __init__(self):
-
+		print("here")
 		self.player_spawn = False
 
 		# get the display surface 
