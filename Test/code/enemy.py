@@ -60,11 +60,12 @@ class Enemy(Entity):
 		self.roaming_duration = 2 * 1000  # Total duration for each roaming cycle (in milliseconds)
 		self.roaming_status = False
 		self.original_pos = pos  # Save the original position for returning
+		self.roaming_speed = 1
 
-		# New state variables for roaming behavior
-		self.roaming_duration_step = 2 * 1000  # Roam for 2 seconds
-		self.return_timer = 0
-		self.return_duration = 10 * 1000  # Return after 10 seconds
+		self.idle_timer = 0
+		self.idle_duration = 10* 1000
+
+
 
 	def import_graphics(self,name):
 			monster_path = f'../graphics/monsters/{name}/'
@@ -112,7 +113,7 @@ class Enemy(Entity):
 		else:
 			if not 'idle' in self.status:
 				self.status += '_idle'
-
+			
 
 	def actions(self,player):
 		if 'attack' in self.status:
@@ -177,10 +178,14 @@ class Enemy(Entity):
 	def roam_around(self):
 		# Check if it's time to change roaming direction
 		current_time = pygame.time.get_ticks()
-		if current_time - self.roaming_timer >= self.roaming_duration:
-			self.roaming_timer = current_time
+
+		if (current_time - self.roaming_timer >= self.roaming_duration):
 			self.roaming_status = True
-			self.roaming()
+			self.roaming2()
+			self.roaming_timer = current_time
+		
+
+			
 
 		
 	def roaming(self):
@@ -216,20 +221,56 @@ class Enemy(Entity):
 			self.roaming_status = False
 		
 
-	def return_to_original_pos(self):
-		self.roaming_status = True
-		self.return_timer = pygame.time.get_ticks()
+	def roaming2(self):
 
-		# Calculate the direction to the original position
-		direction_to_original = pygame.math.Vector2(self.original_pos) - pygame.math.Vector2(self.rect.topleft)
+		# If it's been less than 2 seconds since the last roaming, do nothing
+		random_x = randint(-1, 1)
+		random_y = randint(-1, 1)
+
+		# Limit the enemy's roaming range
+		random_x = max(-1, min(1, random_x))
+		random_y = max(-1, min(1, random_y))
+
+		# Set the new direction
+		self.direction.x = random_x
+		self.direction.y = random_y
 
 		# Check if the direction vector has a non-zero length
-		if direction_to_original.length() > 0:
-			self.direction = direction_to_original.normalize()
-	
+		if self.direction.length() > 0:
+			# Normalize the direction vector
+			self.direction.normalize()
+
+			distance_to_original = pygame.math.Vector2(self.original_pos) - pygame.math.Vector2(self.rect.topleft)
+			print(pygame.math.Vector2(self.original_pos)- pygame.math.Vector2(self.rect.topleft))
+			if distance_to_original.length() > 5:
+				# Check if inverting the direction would take the enemy closer to the original position
+				modified_direction = pygame.math.Vector2(self.direction.x * distance_to_original.x, self.direction.y * distance_to_original.y)
+				if modified_direction.length() < distance_to_original.length():
+					# Set the direction to move towards the original position
+					self.direction.x = distance_to_original.x
+					self.direction.y = distance_to_original.y
+
+
+
+			if self.direction.x < 0 and abs(self.direction.x) > abs(self.direction.y):
+				self.status = 'left'
+			elif self.direction.x > 0 and abs(self.direction.x) > abs(self.direction.y):
+				self.status = 'right'
+			elif self.direction.y < 0 and abs(self.direction.y) >= abs(self.direction.x):
+				self.status = 'up'
+			else:
+				self.status = 'down'
+
+			
+			
+
+
+	def invert_direction(self):
+		# Invert the direction
+		self.direction *= -1
+
 			
 	def update(self):
-		print("Update")
 		self.hit_reaction()
 		self.move(self.speed)
 		self.animate()

@@ -14,7 +14,7 @@ from upgrade import Upgrade
 
 class Level:
 	def __init__(self):
-		print("here")
+		
 		self.player_spawn = False
 
 		# get the display surface 
@@ -46,8 +46,8 @@ class Level:
 		self.last_enemy_respawn_time = pygame.time.get_ticks()
 		self.last_nature_respawn_time = pygame.time.get_ticks()
 
-		self.respawn_enemy_interval = 5 * 60 * 1000 #30 min
-		self.respawn_nature_interval = 1 * 24 * 60 * 60 * 1000  # daily
+		self.respawn_enemy_interval =  5 * 60 * 1000 #30 min
+		self.respawn_nature_interval =  1 * 24 * 60 * 60 * 1000  # daily
 
 
 	def create_map(self):
