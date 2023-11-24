@@ -97,7 +97,7 @@ class Level:
 								elif col == '391': monster_name = 'spirit'
 								elif col == '392': monster_name ='raccoon'
 								else: monster_name = 'squid'
-								Enemy(
+								self.enemy = Enemy(
 									monster_name,
 									(x, y),
 									[self.visible_sprites, self.attackable_sprites],
@@ -246,7 +246,65 @@ class Level:
 			self.visible_sprites.update()
 			self.visible_sprites.enemy_update(self.player)
 			self.player_attack_logic()
+
+
+	def save_game(self, filename, player):
+		game_data = {
+			'player_pos': player.self.pos,
+			'player_stats': player.self.stats,
+			'player_max_stats': player.self.max_stats,
+			'player_max_upgrade': player.self.upgrade_cost,
+			'player_health': player.self.health,
+			'player_energy': player.self.energy,
+			'enemy_data': self.serialize_enemies()
+
+		}
 		
+		with open(filename, 'wb') as file:
+			pickle.dump(game_data, file)
+
+	def load_game(self, filename, player):
+		with open(filename, 'rb') as file:
+			game_data = pickle.load(file)
+
+		
+		player.self.pos = game_data['player_pos']
+		player.self.stats = game_data['player_stats']
+		player.self.max_stats = game_data['player_max_stats']
+		player.self.max_upgrade = game_data['player_max_upgrade']
+		player.self.health = game_data['player_health']
+		player.self.energy = game_data['player_energy']
+
+		self.deserialize_enemies(game_data['enemy_data'])
+
+	def serialize_enemies(self):
+		enemy_list = []
+
+		for sprite in self.visible_sprites.sprites():
+			if isinstance(sprite, Enemy):
+				enemy_data = {
+					'pos': sprite.pos,
+					'type': sprite.monster_name,
+				}
+				enemy_list.append(enemy_data)
+
+		return enemy_list
+	
+	def deserialize_enemies(self, enemy_list):
+		for enemy_data in enemy_list:
+			pos = enemy_data['pos']
+			monster_name = enemy_data['type']
+			# Add other relevant enemy data
+			Enemy(
+				monster_name,
+				pos,
+				[self.visible_sprites, self.attackable_sprites],
+				self.obstacle_sprites,
+				self.damage_player,
+				self.trigger_death_particles,
+				self.add_exp
+			)
+
 
 class YSortCameraGroup(pygame.sprite.Group):
 	def __init__(self):
