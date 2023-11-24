@@ -95,9 +95,6 @@ class Player(Entity):
 				self.create_attack()
 				self.weapon_attack_sound.play()
 
-			if keys[pygame.K_l]:
-				self.save_data()
-
 			# magic input 
 			if keys[pygame.K_LCTRL]:
 				self.attacking = True

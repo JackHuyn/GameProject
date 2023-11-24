@@ -241,7 +241,6 @@ class Enemy(Entity):
 			self.direction.normalize()
 
 			distance_to_original = pygame.math.Vector2(self.original_pos) - pygame.math.Vector2(self.rect.topleft)
-			print(pygame.math.Vector2(self.original_pos)- pygame.math.Vector2(self.rect.topleft))
 			if distance_to_original.length() > 5:
 				# Check if inverting the direction would take the enemy closer to the original position
 				modified_direction = pygame.math.Vector2(self.direction.x * distance_to_original.x, self.direction.y * distance_to_original.y)

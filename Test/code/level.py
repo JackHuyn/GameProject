@@ -11,6 +11,7 @@ from enemy import Enemy
 from particles import AnimationPlayer
 from magic import MagicPlayer
 from upgrade import Upgrade
+import pickle
 
 class Level:
 	def __init__(self):
@@ -250,12 +251,12 @@ class Level:
 
 	def save_game(self, filename, player):
 		game_data = {
-			'player_pos': player.self.pos,
-			'player_stats': player.self.stats,
-			'player_max_stats': player.self.max_stats,
-			'player_max_upgrade': player.self.upgrade_cost,
-			'player_health': player.self.health,
-			'player_energy': player.self.energy,
+			'player_pos': player.pos,
+			'player_stats': player.stats,
+			'player_max_stats': player.max_stats,
+			'player_max_upgrade': player.upgrade_cost,
+			'player_health': player.health,
+			'player_energy': player.energy,
 			'enemy_data': self.serialize_enemies()
 
 		}
@@ -268,12 +269,12 @@ class Level:
 			game_data = pickle.load(file)
 
 		
-		player.self.pos = game_data['player_pos']
-		player.self.stats = game_data['player_stats']
-		player.self.max_stats = game_data['player_max_stats']
-		player.self.max_upgrade = game_data['player_max_upgrade']
-		player.self.health = game_data['player_health']
-		player.self.energy = game_data['player_energy']
+		player.pos = game_data['player_pos']
+		player.stats = game_data['player_stats']
+		player.max_stats = game_data['player_max_stats']
+		player.max_upgrade = game_data['player_max_upgrade']
+		player.health = game_data['player_health']
+		player.energy = game_data['player_energy']
 
 		self.deserialize_enemies(game_data['enemy_data'])
 
@@ -283,7 +284,7 @@ class Level:
 		for sprite in self.visible_sprites.sprites():
 			if isinstance(sprite, Enemy):
 				enemy_data = {
-					'pos': sprite.pos,
+					'pos': sprite.original_pos,
 					'type': sprite.monster_name,
 				}
 				enemy_list.append(enemy_data)

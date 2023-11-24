@@ -48,7 +48,10 @@ class Game:
 					self.in_game = True
 				elif self.load_button_rect.collidepoint(mouse_pos):
 					# Handle loading saved game
-					pass
+					self.level.load_game('011200',self.level.player)
+					self.in_front_page = False
+					self.in_game = True
+					self.level.run()
 				elif self.credit_button_rect.collidepoint(mouse_pos):
 					# Handle showing credits
 					pass
@@ -80,6 +83,10 @@ class Game:
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_m:
 						self.level.toggle_menu()
+					if event.key == pygame.K_ESCAPE:
+						pass
+					if event.key == pygame.K_l:
+						self.level.save_game('011200',self.level.player)
 
 			self.screen.fill(WATER_COLOR)
 			self.level.run()
