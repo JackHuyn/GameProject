@@ -1,7 +1,6 @@
 import pygame
 from settings import *
 
-
 class Upgrade:
 	def __init__(self,player):
 
@@ -22,8 +21,6 @@ class Upgrade:
 		self.selection_index = 0
 		self.selection_time = None
 		self.can_move = True
-
-		self.upgrade_cost_multplier = 1.5
 
 	def input(self):
 		keys = pygame.key.get_pressed()
@@ -120,8 +117,8 @@ class Item:
 
 		if player.exp >= player.upgrade_cost[upgrade_attribute] and player.stats[upgrade_attribute] < player.max_stats[upgrade_attribute]:
 			player.exp -= player.upgrade_cost[upgrade_attribute]
-			player.stats[upgrade_attribute] *= 1.5
-			player.upgrade_cost[upgrade_attribute] *= player.upgrade_cost
+			player.stats[upgrade_attribute] *= 1.2
+			player.upgrade_cost[upgrade_attribute] *= 1.4
 
 		if player.stats[upgrade_attribute] > player.max_stats[upgrade_attribute]:
 			player.stats[upgrade_attribute] = player.max_stats[upgrade_attribute]

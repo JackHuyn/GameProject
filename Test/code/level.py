@@ -86,7 +86,6 @@ class Level:
 
 						if style == 'entities':
 							if col == '394' and not self.player_spawn:
-								print('passed here')
 								self.player = Player(
 									(x,y),
 									[self.visible_sprites],
@@ -283,7 +282,7 @@ class Level:
 		# Clear enemies and nature
 		self.clear_enemy()
 		self.clear_nature('grass')
-
+		self.re_nature()
 		# Deserialize and respawn enemies
 		self.deserialize_enemies(game_data['enemy_data'])
 
