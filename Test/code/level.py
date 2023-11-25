@@ -16,6 +16,7 @@ import pickle
 class Level:
 	def __init__(self):
 		
+		self.player = None
 		self.player_spawn = False
 
 		# get the display surface 
@@ -85,6 +86,7 @@ class Level:
 
 						if style == 'entities':
 							if col == '394' and not self.player_spawn:
+								print('passed here')
 								self.player = Player(
 									(x,y),
 									[self.visible_sprites],
@@ -145,28 +147,18 @@ class Level:
 						y = row_index * TILESIZE
 						
 						if style == 'entities':
-							if col == '394' and not self.player_spawn:
-								self.player = Player(
-									(x,y),
-									[self.visible_sprites],
-									self.obstacle_sprites,
-									self.create_attack,
-									self.destroy_attack,
-									self.create_magic)
-								self.player_spawn = True
-							else:
-								if col == '390': monster_name = 'bamboo'
-								elif col == '391': monster_name = 'spirit'
-								elif col == '392': monster_name ='raccoon'
-								else: monster_name = 'squid'
-								Enemy(
-									monster_name,
-									(x, y),
-									[self.visible_sprites, self.attackable_sprites],
-									self.obstacle_sprites,
-									self.damage_player,
-									self.trigger_death_particles,
-									self.add_exp)
+							if col == '390': monster_name = 'bamboo'
+							elif col == '391': monster_name = 'spirit'
+							elif col == '392': monster_name ='raccoon'
+							else: monster_name = 'squid'
+							Enemy(
+								monster_name,
+								(x, y),
+								[self.visible_sprites, self.attackable_sprites],
+								self.obstacle_sprites,
+								self.damage_player,
+								self.trigger_death_particles,
+								self.add_exp)
 
 
 
@@ -257,26 +249,45 @@ class Level:
 			'player_max_upgrade': player.upgrade_cost,
 			'player_health': player.health,
 			'player_energy': player.energy,
+			'player_exp': player.exp,
 			'enemy_data': self.serialize_enemies()
 
 		}
-		
+		print(game_data['player_pos'])
+		print("save file")
 		with open(filename, 'wb') as file:
 			pickle.dump(game_data, file)
 
-	def load_game(self, filename, player):
+	def load_game(self, filename):
 		with open(filename, 'rb') as file:
 			game_data = pickle.load(file)
 
+		# Load player first
+		self.player.pos = game_data['player_pos']
+		self.player = Player(
+									self.player.pos,
+									[self.visible_sprites],
+									self.obstacle_sprites,
+									self.create_attack,
+									self.destroy_attack,
+									self.create_magic)
+		self.player_spawn = True
+		self.player.stats = game_data['player_stats']
+		self.player.max_stats = game_data['player_max_stats']
+		self.player.max_upgrade = game_data['player_max_upgrade']
+		self.player.health = game_data['player_health']
+		self.player.energy = game_data['player_energy']
+		self.player.exp = game_data['player_exp']
 		
-		player.pos = game_data['player_pos']
-		player.stats = game_data['player_stats']
-		player.max_stats = game_data['player_max_stats']
-		player.max_upgrade = game_data['player_max_upgrade']
-		player.health = game_data['player_health']
-		player.energy = game_data['player_energy']
 
+		# Clear enemies and nature
+		self.clear_enemy()
+		self.clear_nature('grass')
+
+		# Deserialize and respawn enemies
 		self.deserialize_enemies(game_data['enemy_data'])
+
+
 
 	def serialize_enemies(self):
 		enemy_list = []

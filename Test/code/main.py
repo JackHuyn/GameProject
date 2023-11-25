@@ -48,7 +48,8 @@ class Game:
 					self.in_game = True
 				elif self.load_button_rect.collidepoint(mouse_pos):
 					# Handle loading saved game
-					self.level.load_game('011200',self.level.player)
+					self.level.player.kill()
+					self.level.load_game('011200')
 					self.in_front_page = False
 					self.in_game = True
 					self.level.run()
@@ -84,7 +85,8 @@ class Game:
 					if event.key == pygame.K_m:
 						self.level.toggle_menu()
 					if event.key == pygame.K_ESCAPE:
-						pass
+						pygame.quit()
+						sys.exit()
 					if event.key == pygame.K_l:
 						self.level.save_game('011200',self.level.player)
 

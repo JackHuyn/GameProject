@@ -23,6 +23,8 @@ class Upgrade:
 		self.selection_time = None
 		self.can_move = True
 
+		self.upgrade_cost_multplier = 1.5
+
 	def input(self):
 		keys = pygame.key.get_pressed()
 

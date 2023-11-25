@@ -6,6 +6,7 @@ from entity import Entity
 class Player(Entity):
 	def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic):
 		super().__init__(groups)
+		self.pos = pos
 		self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(-6,HITBOX_OFFSET['player'])
@@ -13,7 +14,7 @@ class Player(Entity):
 		# graphics setup
 		self.import_player_assets()
 		self.status = 'down'
-		self.pos = pos
+		
 
 		# movement 
 		self.attacking = False
@@ -38,12 +39,12 @@ class Player(Entity):
 		self.magic_switch_time = None
 
 		# stats
-		self.stats = {'health': 9999,'energy':60,'attack': 999,'magic': 4,'speed': 5,'exp': 0}
+		self.stats = {'health': 9999,'energy':60,'attack': 999,'magic': 4,'speed': 5}
 		self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic' : 10, 'speed': 10}
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health'] * 0.5
 		self.energy = self.stats['energy'] * 0.8
-		self.exp = self.stats['exp']
+		self.exp = 0
 		self.speed = self.stats['speed']
 
 		# damage timer
