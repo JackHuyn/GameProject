@@ -14,6 +14,19 @@ class Player(Entity):
 		# graphics setup
 		self.import_player_assets()
 		self.status = 'down'
+		# self.character_name
+
+		# character_info =characters_data[characters_data]
+		# self.health = characters_info['health']
+		# self.exp = characters_info['exp']
+		# self.energy = characters_info['energy']
+		# self.attack = characters_info['attack']
+		# self.weapon_type = characters_info['weapon_type']
+		# self.skill = characters_info['skill']
+		# self.speed = characters_info['speed']
+		# self.magic = characters_info['magic']
+		# self.attack_cooldown = characters_info['attack_cooldown]
+		# self.spell_cooldown = characters_info['spell_cooldown']
 		
 
 		# movement 
@@ -40,6 +53,7 @@ class Player(Entity):
 
 		# stats
 		self.stats = {'health': 999,'energy':60,'attack': 99,'magic': 4,'speed': 5}
+		# self.stats = {'health': self.health,'energy': self.energy,'attack': self.attack,'magic': self.magic,'speed': self.speed}
 		self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic' : 10, 'speed': 10}
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health'] * 0.5
@@ -54,7 +68,7 @@ class Player(Entity):
 
 		# import a sound
 		self.weapon_attack_sound = pygame.mixer.Sound('../audio/sword.wav')
-		self.weapon_attack_sound.set_volume(0.4)
+		self.weapon_attack_sound.set_volume(0)
 
 	def import_player_assets(self):
 		character_path = '../graphics/player/'

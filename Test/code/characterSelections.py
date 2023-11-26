@@ -5,6 +5,9 @@ from settings import *
 class CharacterSelection:
     def __init__(self, screen):
         self.screen = screen
+        self.image1 = pygame.image.load('../graphics/test/player.png').convert_alpha()
+        self.rect1 = self.image1.get_rect(topleft=(WIDTH // 4 - 50, HEIGHT // 2 - 25))
+
         self.character_buttons = [
             pygame.Rect(50, HEIGHT // 2 - 25, 100, 50),
             pygame.Rect(WIDTH // 4 - 50, HEIGHT // 2 - 25, 100, 50),
@@ -52,4 +55,6 @@ class CharacterSelection:
             color = WHITE if i == self.selected_character else 'Gray'
             pygame.draw.rect(self.screen, color, button_rect)
             self.draw_text(f"Character {i+1}", 18, BLACK, *button_rect.center)
+
+            self.screen.blit(self.image1, self.rect1)
         pygame.display.update()

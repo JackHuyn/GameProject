@@ -57,9 +57,9 @@ monster_data = {
 	'bamboo': {'health': 70,'exp':120,'damage':6,'attack_type': 'leaf_attack', 'attack_sound':'../audio/attack/slash.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 100}}
 
 characters_data = {
-    'kanji': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
-    'borg': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
-    'zhinja': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
-	'kanji': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
-    'kanji': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000}
+    'Gangblanc': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
+    'Borg': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
+    'Zhinja': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
+	'Katan': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000},
+    'Kanji': {'health': 200,'exp': 0,'attack' : 20,'energy' : 150,'weapon_type': 'sword','skill': 'berserk','speed': 5,'magic' :3,'attack_cooldown': 400,'spell_cooldown': 2000}
 }
