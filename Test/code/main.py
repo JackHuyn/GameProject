@@ -9,7 +9,7 @@ class Game:
         # general setup
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption('Zelda')
+        pygame.display.set_caption('testing new setup')
         self.clock = pygame.time.Clock()
 
         self.level = Level()
