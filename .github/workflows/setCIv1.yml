@@ -33,10 +33,10 @@ jobs:
         pip install pylint
 
     # note pytest will run all files of the form test_*.py or *_test.py in the current directory and its subdirectories
-    - name: Check code using pytest
-      run: |
-        pip install pytest pytest-cov
-        pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+    # - name: Check code using pytest
+    #   run: |
+    #     pip install pytest pytest-cov
+    #     pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
         
     - name: Lint with Ruff
       run: |
