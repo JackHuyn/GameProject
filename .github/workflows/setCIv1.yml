@@ -31,7 +31,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pylint
-        pip install -r requirement.txt
+
     # note pytest will run all files of the form test_*.py or *_test.py in the current directory and its subdirectories
     - name: Check code using pytest
       run: |
