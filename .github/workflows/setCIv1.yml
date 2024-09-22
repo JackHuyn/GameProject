@@ -44,9 +44,10 @@ jobs:
         ruff check --output-format-github .
         continue on error: true
     
-    - name: upload artifact
+    - name: upload pytest result
       uses: action/upload-artifact@v4
       with:
-        name: my-artifact
-        path: my_file.txt
-        retention-days: 5
+        name: pytest-results-${{ matrix.python-version }}
+        path: junit/test-results-${{ matrix.python-version }}.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
